@@ -1,17 +1,20 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import Api from './Api';
 
 function RepoSearch(props){
 	return(
 		<div>
 		 	<h1>Repo Search</h1>
 		 	<form onSubmit={props.handleSubmit}>
-			 	<input value = {props.inputValue} 
+			 	<input value = {props.searchInputValue } 
 			 	onChange={props.handleInputChange} />
-		 	</form>
-		 	<ul>
-		 		<li>repo 1</li>
-		 	</ul>
+			</form>
+			<ul>
+				{props.repos.map((repo)=>{
+					return <li key={repo.id}><a href={repo.html_url}>{repo.name}</a></li>
+				})}
+			</ul>
 		</div>
 	);
 }
@@ -19,22 +22,22 @@ function RepoSearch(props){
 const mapStateToProps =(state) => {
 	console.log('state', state);
 	return {
-		inputValue: state.inputValue
+		searchInputValue: state.searchInputValue,
+		repos: state.repos
 	};
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		handleInputChange: (event) => {
-			console.log('handling');
-			dispatch({ type: 'SEARCH_INPUT_CHANGE',
-			value: event.target.value
-		});
+			console.log('handleInputChange');
+			dispatch({ type:'SEARCH_INPUT_CHANGE', value: event.target.value});
 		},
-		handleSubmit : (e) => {
-			e.preventDefault();
-			console.log('submitting');
-		}
+		handleSubmit: (event) => {
+			event.preventDefault();
+				console.log('submitting');
+				Api.getRepos(dispatch);
+				}
+			}
 	}
-}
-export default connect(mapStateToProps)(RepoSearch);
+export default connect(mapStateToProps,mapDispatchToProps)(RepoSearch);
