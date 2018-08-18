@@ -1,12 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Api from './Api';
+//import axios from 'axios';
 
 function RepoSearch(props){
 	return(
 		<div>
 		 	<h1>Repo Search</h1>
-		 	<form onSubmit={props.handleSubmit}>
+		 	<form onSubmit={(event)=>props.handleSubmit(event, props.searchInputValue)}>
 			 	<input value = {props.searchInputValue } 
 			 	onChange={props.handleInputChange} />
 			</form>
@@ -33,10 +34,11 @@ const mapDispatchToProps = (dispatch) => {
 			console.log('handleInputChange');
 			dispatch({ type:'SEARCH_INPUT_CHANGE', value: event.target.value});
 		},
-		handleSubmit: (event) => {
+		handleSubmit: (event, query) => {
 			event.preventDefault();
 				console.log('submitting');
-				Api.getRepos(dispatch);
+				Api.getRepos(dispatch, query);
+
 				}
 			}
 	}

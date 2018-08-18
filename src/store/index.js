@@ -3,7 +3,7 @@ import {createStore} from 'redux';
 
 const initialState = {
 	repos: [],
-	searchInputValue:'hi'
+	searchInputValue:''
 };
 
 const reducer = (state = initialState, action) =>{
