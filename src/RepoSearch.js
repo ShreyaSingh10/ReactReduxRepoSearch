@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Api from './Api';
-//import axios from 'axios';
+import axios from 'axios';
 
 function RepoSearch(props){
 	return(
@@ -37,8 +37,11 @@ const mapDispatchToProps = (dispatch) => {
 		handleSubmit: (event, query) => {
 			event.preventDefault();
 				console.log('submitting');
-				Api.getRepos(dispatch, query);
-
+				//Api.getRepos(dispatch, query);
+				axios.get(`https://api.github.com/search/repositories?q=${query}`)
+				.then((response)=>{
+					dispatch({ type: 'SET_REPOS', repos: response.data.items})
+				});
 				}
 			}
 	}
